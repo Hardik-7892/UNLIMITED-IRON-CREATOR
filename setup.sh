@@ -24,7 +24,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo ""
     echo "To activate it, run:"
     echo "  source venv/bin/activate  (Linux/Mac)"
-    echo "  venv\\Scripts\\activate     (Windows)"
+    echo "  venv/Scripts/activate     (Windows)"
     echo ""
 fi
 

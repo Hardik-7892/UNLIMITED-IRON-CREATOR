@@ -10,7 +10,7 @@ import sys
 import json
 import argparse
 from typing import Dict, Any, Optional, List
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class UnlimitedMultimediaGenerator:
@@ -49,6 +49,18 @@ class UnlimitedMultimediaGenerator:
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
     
+    def _get_timestamp(self) -> tuple[str, str]:
+        """
+        Generate consistent timestamp for filename and metadata.
+        
+        Returns:
+            Tuple of (filename_timestamp, iso_timestamp)
+        """
+        now = datetime.now(timezone.utc)
+        filename_ts = now.strftime('%Y%m%d_%H%M%S')
+        iso_ts = now.isoformat()
+        return filename_ts, iso_ts
+    
     def generate_text(self, prompt: str, **kwargs) -> str:
         """
         Generate text content using AI.
@@ -67,6 +79,10 @@ class UnlimitedMultimediaGenerator:
         temperature = kwargs.get('temperature', 0.7)
         style = kwargs.get('style', 'creative')
         
+        # Get consistent timestamp
+        filename_ts, iso_ts = self._get_timestamp()
+        readable_time = datetime.fromisoformat(iso_ts).strftime('%Y-%m-%d %H:%M:%S UTC')
+        
         # Simulated text generation (in real implementation, would use GPT, Claude, etc.)
         generated_text = f"""Generated Text (Prompt: "{prompt}")
         
@@ -81,12 +97,11 @@ Based on your prompt: "{prompt}"
 The system is designed to be flexible, extensible, and capable of generating
 various types of multimedia content without artificial limitations.
 
-Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+Generated at: {readable_time}
 """
         
         # Save to file
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"{self.output_dir}/text_{timestamp}.txt"
+        filename = f"{self.output_dir}/text_{filename_ts}.txt"
         with open(filename, 'w') as f:
             f.write(generated_text)
         
@@ -111,9 +126,9 @@ Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
         style = kwargs.get('style', 'realistic')
         img_format = kwargs.get('format', self.config.get('default_format', 'png'))
         
-        # Simulated image generation metadata
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"{self.output_dir}/image_{timestamp}.{img_format}"
+        # Get consistent timestamp
+        filename_ts, iso_ts = self._get_timestamp()
+        filename = f"{self.output_dir}/image_{filename_ts}.{img_format}"
         
         # Create placeholder image metadata file
         metadata = {
@@ -121,7 +136,7 @@ Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
             'size': size,
             'style': style,
             'format': img_format,
-            'generated_at': datetime.now().isoformat(),
+            'generated_at': iso_ts,
             'type': 'image'
         }
         
@@ -156,8 +171,9 @@ Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
         duration = kwargs.get('duration', 'auto')
         audio_format = kwargs.get('format', 'mp3')
         
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"{self.output_dir}/audio_{timestamp}.{audio_format}"
+        # Get consistent timestamp
+        filename_ts, iso_ts = self._get_timestamp()
+        filename = f"{self.output_dir}/audio_{filename_ts}.{audio_format}"
         
         # Create audio metadata
         metadata = {
@@ -166,7 +182,7 @@ Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
             'voice': voice,
             'duration': duration,
             'format': audio_format,
-            'generated_at': datetime.now().isoformat()
+            'generated_at': iso_ts
         }
         
         metadata_file = f"{filename}.json"
@@ -201,8 +217,9 @@ Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
         style = kwargs.get('style', 'realistic')
         video_format = kwargs.get('format', 'mp4')
         
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"{self.output_dir}/video_{timestamp}.{video_format}"
+        # Get consistent timestamp
+        filename_ts, iso_ts = self._get_timestamp()
+        filename = f"{self.output_dir}/video_{filename_ts}.{video_format}"
         
         # Create video metadata
         metadata = {
@@ -212,7 +229,7 @@ Generated at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
             'fps': fps,
             'style': style,
             'format': video_format,
-            'generated_at': datetime.now().isoformat(),
+            'generated_at': iso_ts,
             'type': 'video'
         }
         
