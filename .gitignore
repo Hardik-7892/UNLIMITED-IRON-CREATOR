@@ -20,10 +20,10 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
+# Virtual environments
 venv/
-env/
 ENV/
+env/
 
 # IDEs
 .vscode/
@@ -32,18 +32,9 @@ ENV/
 *.swo
 *~
 
-# Generated Media Output
-generated_media/
-test_output/
-output/
-
-# Configuration with secrets
-config.json
-.env
-
 # OS
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
+# Streamlit
+.streamlit/secrets.toml
