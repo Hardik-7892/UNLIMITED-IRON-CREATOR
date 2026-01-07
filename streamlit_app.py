@@ -58,7 +58,8 @@ with col1:
 with col2:
     st.subheader("Sample Data Visualization")
     
-    # Generate sample data
+    # Generate sample data with seed for consistency
+    np.random.seed(42)
     chart_data = pd.DataFrame(
         np.random.randn(20, 3),
         columns=['Series A', 'Series B', 'Series C']
